@@ -1,10 +1,10 @@
-import React from "react";
-import { Text } from "react-native";
+import React, {useEffect} from 'react';
+import HomeScreen from './src/home';
 
-const App =() =>{
-  return(
-    <Text>Nguyễn Đình Trưng</Text>
-  )
-}
+const App = () => {
+  return (
+    <HomeScreen/>
+  );
+};
 
 export default App;
