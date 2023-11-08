@@ -10,8 +10,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.19.4",
+    "@react-native-cookies/cookies": "^6.2.1",
     "axios": "^1.6.0",
     "cookie": "^0.5.0",
+    "js-cookie": "^3.0.5",
     "react": "18.2.0",
     "react-native": "0.72.6"
   },

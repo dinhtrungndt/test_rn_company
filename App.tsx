@@ -1,9 +1,14 @@
-import React, {useEffect} from 'react';
-import HomeScreen from './src/home';
+import React from 'react';
+import { SafeAreaView } from 'react-native';
+
+// Screens
+import JokeHome from './src/components/screens/JokeHome';
 
 const App = () => {
   return (
-    <HomeScreen/>
+    <SafeAreaView style={{flex: 1}}>
+      <JokeHome />
+    </SafeAreaView>
   );
 };
 
