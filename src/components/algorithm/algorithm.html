@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Đình Trưng</title>
+</head>
+<body>
+    <h1>Nguyễn Đình Trưng - Test Algorithm</h1>
+    <div id="result"></div>
+    <script>
+      function miniMaxSum(arr) {
+            arr.sort((a, b) => a - b);
+
+            const minSum = arr.slice(0, 4).reduce((acc, curr) => acc + curr, 0);
+            const maxSum = arr.slice(1).reduce((acc, curr) => acc + curr, 0);
+            const resultDiv = document.getElementById("result");
+
+            resultDiv.innerHTML = `Minimum Sum: ${minSum}<br>Maximum Sum: ${maxSum}`;
+        }
+        const input = "1 2 3 4 5";
+        const arr = input.split(" ").map(Number);
+
+        miniMaxSum(arr);
+
+    </script>
+</body>
+</html>
