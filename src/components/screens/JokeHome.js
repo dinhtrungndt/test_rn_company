@@ -2,9 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Data joke
+import {Data} from './Data';
+
 const JokeHome = () => {
-  const [hasMoreJokes, setHasMoreJokes] = useState(true);
+  const [currentJokeIndex, setCurrentJokeIndex] = useState(0);
   const [userVote, setUserVote] = useState(null);
+  const [hasMoreJokes, setHasMoreJokes] = useState(true);
 
   useEffect(() => {
     loadUserVote();
@@ -23,13 +27,22 @@ const JokeHome = () => {
 
   const handleVote = async vote => {
     setUserVote(vote);
-
     try {
       await AsyncStorage.setItem('userVote', vote);
     } catch (error) {
       console.error('Error storing user vote:', error);
     }
   };
+
+  const getNextJoke = () => {
+    if (currentJokeIndex < Data.length - 1) {
+      setCurrentJokeIndex(currentJokeIndex + 1);
+    } else {
+      setHasMoreJokes(false);
+    }
+  };
+
+  const currentJoke = Data[currentJokeIndex];
 
   return (
     <View style={styles.T}>
@@ -67,28 +80,24 @@ const JokeHome = () => {
           </View>
           {/* content 02 */}
           <View style={styles.content_2}>
-            <Text style={styles.ct_2_text_1}>
-              A child asked his father, "How were people born?" So his father
-              said, "Adam and Eve made babies, then their babies became adults
-              and made babies, and so on." The child then went to his mother,
-              asked her the same question and she told him, "We were monkeys
-              then we evolved to become like we are now." The child ran back to
-              his father and said, "You lied to me!" His father replied, "No,
-              your mom was talking about her side of the family!"
-            </Text>
+            <Text style={styles.ct_2_text_1}>{currentJoke.content}</Text>
             {/* Button */}
             <View style={styles.ct_2_1}>
               <TouchableOpacity
                 style={styles.ct_2_button_1}
-                onPress={() => handleVote('funny')}
-                disabled={userVote === 'funny'}>
+                onPress={() => {
+                  handleVote('funny');
+                  getNextJoke();
+                }}>
                 <Text style={styles.ct_2_text_button_1}>This is Funny!</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[styles.ct_2_button_1, {backgroundColor: '#29b363'}]}
-                onPress={() => handleVote('notFunny')}
-                disabled={userVote === 'notFunny'}>
+                onPress={() => {
+                  handleVote('notFunny');
+                  getNextJoke();
+                }}>
                 <Text style={styles.ct_2_text_button_1}>
                   This is not funny.
                 </Text>
@@ -97,10 +106,21 @@ const JokeHome = () => {
           </View>
         </View>
       ) : (
-        // Display a message when there are no more jokes
-        <Text style={styles.noMoreJokesMessage}>
-          Hôm nay chỉ có vậy thôi! Hãy quay lại vào ngày khác!
-        </Text>
+        <>
+          <View style={styles.content_1}>
+            <Text style={styles.ct_1_1}>
+              A joke a day keeps the doctor away
+            </Text>
+            <Text style={[styles.ct_1_1, {fontSize: 14, paddingTop: 20}]}>
+              If you joke wrong way, your teeth have to pay. (Serious)
+            </Text>
+          </View>
+          <View style={styles.noMoreJokesContainer}>
+            <Text style={styles.noMoreJokesMessage}>
+              Hôm nay chỉ có vậy thôi! Hãy quay lại vào ngày khác!
+            </Text>
+          </View>
+        </>
       )}
       {/* Footer*/}
       <View style={styles.footer}>
@@ -126,8 +146,8 @@ const JokeHome = () => {
 
 const styles = StyleSheet.create({
   T: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
+    justifyContent: 'space-between',
   },
   header: {
     padding: 14,
@@ -153,6 +173,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 30,
   },
+  content_2: {
+    height: 400,
+    backgroundColor: '#FFF',
+  },
   ct_2_text_1: {
     color: '#666666',
     fontSize: 16,
@@ -163,7 +187,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     margin: 24,
-    marginTop: 60,
+    top: 60,
   },
   ct_2_button_1: {
     width: 150,
@@ -176,6 +200,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 10,
   },
+  noMoreJokesContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noMoreJokesMessage: {
+    textAlign: 'center',
+  },
   ft_ct_text_1: {
     fontSize: 14,
     textAlign: 'center',
@@ -185,7 +217,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     color: '#000',
-    paddingTop: 10,
+    paddingTop: 5,
   },
 });
 export default JokeHome;
